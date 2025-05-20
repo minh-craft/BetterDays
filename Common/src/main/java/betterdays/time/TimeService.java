@@ -81,7 +81,10 @@ public class TimeService {
         TimeContext context = new TimeContext(this, time, deltaTime);
         getActiveTimeEffects().forEach(effect -> effect.get().onTimeTick(context));
 
-        if (ConfigHandler.Common.enableSleepFeature() && !sleepStatus.allAwake() && Time.crossedMorning(oldTime, time)) {
+        if (ConfigHandler.Common.enableSleepFeature() && !sleepStatus.allAwake()
+            && ( Time.timeOfDay(time.longValue()) > ConfigHandler.Common.sleepWakeTime()
+                    || Time.crossedMorning(oldTime, time)))
+        {
             handleMorning();
         }
 
