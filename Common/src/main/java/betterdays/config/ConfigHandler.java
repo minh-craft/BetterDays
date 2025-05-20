@@ -159,6 +159,8 @@ public class ConfigHandler {
         private final SpectreConfigSpec.BooleanValue clearWeatherOnWake;
         private final SpectreConfigSpec.BooleanValue displayBedClock;
         private final SpectreConfigSpec.BooleanValue allowDaySleep;
+        private final SpectreConfigSpec.DoubleValue sleepEarliestAllowedTime;
+        private final SpectreConfigSpec.DoubleValue sleepWakeTime;
 
         private final SpectreConfigSpec.ConfigValue<String> morningMessage;
         private final SpectreConfigSpec.EnumValue<ChatTypeOptions> morningMessageType;
@@ -287,6 +289,16 @@ public class ConfigHandler {
                             "When true, players are allowed to sleep at all times of day in dimensions controlled by Better Days.",
                             "Note: Other mods may override this ability.")
                     .define("allowDaySleep", false);
+
+            sleepEarliestAllowedTime = builder.comment(
+                            "The earliest time players are allowed to sleep.",
+                            "Default: 12540")
+                    .defineInRange("sleepEarliestAllowedTime", 12540D, 12000D, 22000D);
+
+            sleepWakeTime = builder.comment(
+                            "The time players wake up from sleep.",
+                            "Default: 24000")
+                    .defineInRange("sleepWakeTime", 24000D, 22000D, 24000D);
 
             displayBedClock = builder
                     .comment("When true, a clock is displayed in the sleep interface.")
@@ -426,6 +438,14 @@ public class ConfigHandler {
 
         public static boolean allowDaySleep() {
             return COMMON.allowDaySleep.get();
+        }
+
+        public static double sleepEarliestAllowedTime() {
+            return COMMON.sleepEarliestAllowedTime.get();
+        }
+
+        public static double sleepWakeTime() {
+            return COMMON.sleepWakeTime.get();
         }
 
         public static String morningMessage() {

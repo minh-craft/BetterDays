@@ -35,7 +35,7 @@ public class TimeServiceManager {
     /** The Overworld {@code TimeService} object. null if Overworld not loaded. */
     public static TimeService service;
     /** The earliest time at which players are no longer allowed to sleep in vanilla. */
-    public static final Time VANILLA_SLEEP_END = new Time(23460);
+//    public static final Time VANILLA_SLEEP_END = new Time(23460);
 
     /**
      * Modifies permitted sleep times to allow players to sleep during the day. Only applies to
@@ -59,8 +59,8 @@ public class TimeServiceManager {
     }
 
     /**
-     * Modifies permitted sleep times to allow players to sleep through dawn until day-time 0
-     * while the sleep feature is enabled.
+     * Modifies permitted sleep times to allow players to sleep through from the configured earliest
+     * sleep time until the configured wake-up time while the sleep feature is enabled.
      *
      * <p>Called once per tick for every player who is currently sleeping. Event result determines
      * if sleep is allowed at the current time.
@@ -71,7 +71,9 @@ public class TimeServiceManager {
         if (service != null && service.level.get().equals(level)) {
             Time time = service.getDayTime().timeOfDay();
             if (ConfigHandler.Common.enableSleepFeature()
-                    && time.compareTo(VANILLA_SLEEP_END) >= 0) {
+                && time.compareTo(new Time(ConfigHandler.Common.sleepEarliestAllowedTime())) >= 0
+                && time.compareTo(new Time(ConfigHandler.Common.sleepWakeTime())) < 0
+            ) {
                 return true;
             }
         }

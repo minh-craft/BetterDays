@@ -28,7 +28,7 @@ public class ServerEventListener {
                 return InteractionResult.SUCCESS;
             }
 
-            return InteractionResult.PASS;
+            return InteractionResult.FAIL;
         }));
 
         EntitySleepEvents.STOP_SLEEPING.register(((entity, sleepingPos) -> {
